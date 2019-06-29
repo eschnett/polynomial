@@ -2,6 +2,7 @@
 module TestData where
 
 import Control.DeepSeq
+import Control.Applicative
 import Control.Monad
 import Data.List
 import Data.Function
@@ -20,8 +21,11 @@ data Tagged a = Tagged { tags :: S.Set String, untag :: a }
     deriving (Eq, Ord, Show)
 instance Functor Tagged where
     fmap f x = x { untag = f (untag x) }
+instance Applicative Tagged where
+    pure x       = Tagged { tags = S.empty,                   untag = x }
+    liftA2 f x y = Tagged { tags = S.union (tags x) (tags y), untag = z }
+        where z = f (untag x) (untag y)
 instance Monad Tagged where
-    return x = Tagged { tags = S.empty,                   untag = x }
     x >>= f  = Tagged { tags = S.union (tags x) (tags y), untag = untag y }
         where y = f (untag x)
 

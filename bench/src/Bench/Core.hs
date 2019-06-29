@@ -6,6 +6,7 @@ import TestData
 import Criterion
 import Control.DeepSeq
 import Control.Monad
+import Data.AdditiveGroup
 import Data.Ratio ((%))
 import Math.Polynomial
 import Data.List (foldl', nub)
@@ -123,6 +124,6 @@ integerPolys = allPolys
 integerPolyPairs :: [Tagged (Poly Integer, Poly Integer)]
 integerPolyPairs = testPairs
 
-testPairs :: (Num a, Eq a) => [Tagged (Poly a, Poly a)]
+testPairs :: (Num a, Eq a, AdditiveGroup a) => [Tagged (Poly a, Poly a)]
 testPairs = liftM2 argPair allPolys allPolys
     -- arbitrarySubset' 10 (liftM2 argPair allPolys allPolys)
